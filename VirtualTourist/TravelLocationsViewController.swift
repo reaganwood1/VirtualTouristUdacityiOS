@@ -15,6 +15,7 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.delegate = self
         longPressGestureActivated()
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -24,21 +25,48 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    func didLongPress() {
-        print("long pressed")
+    func getPinLocation(press: UILongPressGestureRecognizer) {
+        let point: CGPoint = press.locationInView(mapView)
+        let location = mapView.convertPoint(point, toCoordinateFromView: mapView)
+        addLocationToMap(location)
+        
+    }
+    
+    func addLocationToMap(location: CLLocationCoordinate2D){
+        // TODO: check to see if the pin alread contains a location
+
+        // Add the annotation to the map
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location
+        mapView.addAnnotation(annotation)
     }
     
     func longPressGestureActivated () {
         
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: "didLongPress")
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(TravelLocationsViewController.getPinLocation(_:)))
         longPressGesture.minimumPressDuration = 1
         mapView.addGestureRecognizer(longPressGesture)
         
     }
     
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    //  sets pin type
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
-    }
+        let reuseId = "pin"
+        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView!.canShowCallout = true
+            pinView!.pinTintColor = UIColor.redColor()
+            pinView!.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+        }
+        else {
+            pinView!.annotation = annotation
+        }
+        
+        return pinView
+    } // end function
     
 }
 
