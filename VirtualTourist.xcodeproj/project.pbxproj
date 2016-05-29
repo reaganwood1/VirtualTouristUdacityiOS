@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		7FBEFE361CFA7179002BA9BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE351CFA7179002BA9BB /* AppDelegate.swift */; };
-		7FBEFE381CFA7179002BA9BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE371CFA7179002BA9BB /* ViewController.swift */; };
+		7FBEFE381CFA7179002BA9BB /* TravelLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */; };
 		7FBEFE3B1CFA7179002BA9BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FBEFE391CFA7179002BA9BB /* Main.storyboard */; };
 		7FBEFE3D1CFA7179002BA9BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7FBEFE3C1CFA7179002BA9BB /* Assets.xcassets */; };
 		7FBEFE401CFA7179002BA9BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FBEFE3E1CFA7179002BA9BB /* LaunchScreen.storyboard */; };
 		7FBEFE4B1CFA7179002BA9BB /* VirtualTouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE4A1CFA7179002BA9BB /* VirtualTouristTests.swift */; };
 		7FBEFE561CFA7179002BA9BB /* VirtualTouristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE551CFA7179002BA9BB /* VirtualTouristUITests.swift */; };
+		7FBEFE641CFA72B3002BA9BB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FBEFE631CFA72B3002BA9BB /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +37,7 @@
 /* Begin PBXFileReference section */
 		7FBEFE321CFA7179002BA9BB /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FBEFE351CFA7179002BA9BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7FBEFE371CFA7179002BA9BB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationsViewController.swift; sourceTree = "<group>"; };
 		7FBEFE3A1CFA7179002BA9BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7FBEFE3C1CFA7179002BA9BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7FBEFE3F1CFA7179002BA9BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +48,7 @@
 		7FBEFE511CFA7179002BA9BB /* VirtualTouristUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualTouristUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FBEFE551CFA7179002BA9BB /* VirtualTouristUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualTouristUITests.swift; sourceTree = "<group>"; };
 		7FBEFE571CFA7179002BA9BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7FBEFE631CFA72B3002BA9BB /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FBEFE641CFA72B3002BA9BB /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +80,7 @@
 		7FBEFE291CFA7179002BA9BB = {
 			isa = PBXGroup;
 			children = (
+				7FBEFE631CFA72B3002BA9BB /* MapKit.framework */,
 				7FBEFE341CFA7179002BA9BB /* VirtualTourist */,
 				7FBEFE491CFA7179002BA9BB /* VirtualTouristTests */,
 				7FBEFE541CFA7179002BA9BB /* VirtualTouristUITests */,
@@ -98,7 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				7FBEFE351CFA7179002BA9BB /* AppDelegate.swift */,
-				7FBEFE371CFA7179002BA9BB /* ViewController.swift */,
+				7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */,
 				7FBEFE391CFA7179002BA9BB /* Main.storyboard */,
 				7FBEFE3C1CFA7179002BA9BB /* Assets.xcassets */,
 				7FBEFE3E1CFA7179002BA9BB /* LaunchScreen.storyboard */,
@@ -256,7 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FBEFE381CFA7179002BA9BB /* ViewController.swift in Sources */,
+				7FBEFE381CFA7179002BA9BB /* TravelLocationsViewController.swift in Sources */,
 				7FBEFE361CFA7179002BA9BB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
