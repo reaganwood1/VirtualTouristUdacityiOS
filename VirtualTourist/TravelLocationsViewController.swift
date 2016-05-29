@@ -12,6 +12,7 @@ import MapKit
 class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
+    var pressedDown: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +27,19 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
     }
 
     func getPinLocation(press: UILongPressGestureRecognizer) {
-        let point: CGPoint = press.locationInView(mapView)
-        let location = mapView.convertPoint(point, toCoordinateFromView: mapView)
-        addLocationToMap(location)
+        
+        if (pressedDown == false){ // makes sure multiple pins don't get added to the map
+            pressedDown = true
+            let point: CGPoint = press.locationInView(mapView)
+            let location = mapView.convertPoint(point, toCoordinateFromView: mapView)
+            addLocationToMap(location)
+        } else if (press.state == .Ended) { // makes multiple pins don't get added to the map
+            pressedDown = false
+        }
+        
         
     }
-    
+
     func addLocationToMap(location: CLLocationCoordinate2D){
         // TODO: check to see if the pin alread contains a location
 
@@ -41,12 +49,12 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
         mapView.addAnnotation(annotation)
     }
     
+    
     func longPressGestureActivated () {
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(TravelLocationsViewController.getPinLocation(_:)))
         longPressGesture.minimumPressDuration = 1
         mapView.addGestureRecognizer(longPressGesture)
-        
     }
     
     //  sets pin type
