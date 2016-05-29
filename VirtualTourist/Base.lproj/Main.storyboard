@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Virtual Tourist-->
@@ -13,14 +14,28 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="TravelLocatoin">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Epe-3b-FrS">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Epe-3b-FrS" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Bgu-Qi-3hB"/>
+                            <constraint firstItem="Epe-3b-FrS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="m2Y-rN-S7Y"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Epe-3b-FrS" secondAttribute="trailing" constant="-20" id="xdO-71-0E5"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Epe-3b-FrS" secondAttribute="bottom" id="xgC-U5-1DU"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="coZ-ZD-rT6">
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="Cbw-87-CfJ"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="mapView" destination="Epe-3b-FrS" id="VRB-S2-qhV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

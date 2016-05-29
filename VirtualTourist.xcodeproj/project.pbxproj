@@ -101,9 +101,10 @@
 		7FBEFE341CFA7179002BA9BB /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
+				7FBEFE651CFA76C7002BA9BB /* Model */,
+				7FBEFE671CFA76DA002BA9BB /* View */,
+				7FBEFE681CFA76E3002BA9BB /* Controller */,
 				7FBEFE351CFA7179002BA9BB /* AppDelegate.swift */,
-				7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */,
-				7FBEFE391CFA7179002BA9BB /* Main.storyboard */,
 				7FBEFE3C1CFA7179002BA9BB /* Assets.xcassets */,
 				7FBEFE3E1CFA7179002BA9BB /* LaunchScreen.storyboard */,
 				7FBEFE411CFA7179002BA9BB /* Info.plist */,
@@ -127,6 +128,29 @@
 				7FBEFE571CFA7179002BA9BB /* Info.plist */,
 			);
 			path = VirtualTouristUITests;
+			sourceTree = "<group>";
+		};
+		7FBEFE651CFA76C7002BA9BB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		7FBEFE671CFA76DA002BA9BB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7FBEFE391CFA7179002BA9BB /* Main.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		7FBEFE681CFA76E3002BA9BB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
