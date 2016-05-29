@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F5210511CFB89A400BA95D5 /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5210501CFB89A400BA95D5 /* PhotoCollectionViewController.swift */; };
 		7FBEFE361CFA7179002BA9BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE351CFA7179002BA9BB /* AppDelegate.swift */; };
 		7FBEFE381CFA7179002BA9BB /* TravelLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */; };
 		7FBEFE3B1CFA7179002BA9BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FBEFE391CFA7179002BA9BB /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7F5210501CFB89A400BA95D5 /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
 		7FBEFE321CFA7179002BA9BB /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FBEFE351CFA7179002BA9BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationsViewController.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */,
+				7F5210501CFB89A400BA95D5 /* PhotoCollectionViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FBEFE381CFA7179002BA9BB /* TravelLocationsViewController.swift in Sources */,
+				7F5210511CFB89A400BA95D5 /* PhotoCollectionViewController.swift in Sources */,
 				7FBEFE361CFA7179002BA9BB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -510,6 +514,7 @@
 				7FBEFE5C1CFA7179002BA9BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7FBEFE5D1CFA7179002BA9BB /* Build configuration list for PBXNativeTarget "VirtualTouristTests" */ = {
 			isa = XCConfigurationList;
@@ -518,6 +523,7 @@
 				7FBEFE5F1CFA7179002BA9BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7FBEFE601CFA7179002BA9BB /* Build configuration list for PBXNativeTarget "VirtualTouristUITests" */ = {
 			isa = XCConfigurationList;
@@ -526,6 +532,7 @@
 				7FBEFE621CFA7179002BA9BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

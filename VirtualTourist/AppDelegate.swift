@@ -14,7 +14,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
+    func firstLaunchZoom () {
+        if (!NSUserDefaults.standardUserDefaults().boolForKey("hasLaunched")){
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasLaunched")
+            NSUserDefaults.standardUserDefaults().setFloat(42, forKey: "mapLatitude")
+            NSUserDefaults.standardUserDefaults().setFloat(-96, forKey: "mapLongitude")
+            NSUserDefaults.standardUserDefaults().setFloat(115.49179218053267, forKey: "latitudeDelta")
+            NSUserDefaults.standardUserDefaults().setFloat(179.97740153887872, forKey: "longitudeDelta")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        firstLaunchZoom()
         // Override point for customization after application launch.
         return true
     }

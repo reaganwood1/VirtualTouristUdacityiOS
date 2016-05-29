@@ -17,6 +17,16 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        
+        let latitude: Double = Double(NSUserDefaults.standardUserDefaults().floatForKey("mapLatitude"))
+        let longitude: Double = Double(NSUserDefaults.standardUserDefaults().floatForKey("mapLongitude"))
+        let latitudeSpan = Double(NSUserDefaults.standardUserDefaults().floatForKey("latitudeDelta"))
+        let longitudeSpan = Double(NSUserDefaults.standardUserDefaults().floatForKey("longitudeDelta"))
+        let span = MKCoordinateSpan(latitudeDelta: latitudeSpan, longitudeDelta: longitudeSpan)
+        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: span)
+        mapView.setRegion(region, animated: true)
+        
+        print(mapView.region.span)
         longPressGestureActivated()
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -40,9 +50,21 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
         
     }
 
+    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+       let Cl2D = mapView.region
+        let latitudeFloat = Float (Cl2D.center.latitude)
+        let longitudeFloat = Float(Cl2D.center.longitude)
+        let coordinateSpan = mapView.region.span
+        let floatLatitudeSpan = Float(coordinateSpan.latitudeDelta)
+        let floatLongitudeSpan = Float(coordinateSpan.longitudeDelta)
+        NSUserDefaults.standardUserDefaults().setFloat(latitudeFloat, forKey: "mapLatitude")
+        NSUserDefaults.standardUserDefaults().setFloat(longitudeFloat, forKey: "mapLongitude")
+        NSUserDefaults.standardUserDefaults().setFloat(floatLatitudeSpan, forKey: "latitudeDelta")
+        NSUserDefaults.standardUserDefaults().setFloat(floatLongitudeSpan, forKey: "longitudeDelta")
+    }
     func addLocationToMap(location: CLLocationCoordinate2D){
         // TODO: check to see if the pin alread contains a location
-
+        print(mapView.region.center)
         // Add the annotation to the map
         let annotation = MKPointAnnotation()
         annotation.coordinate = location
