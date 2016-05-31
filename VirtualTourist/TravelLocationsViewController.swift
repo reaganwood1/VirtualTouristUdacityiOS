@@ -8,16 +8,22 @@
 
 import UIKit
 import MapKit
+import CoreData
 
-class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
+class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate{
 
     @IBOutlet weak var mapView: MKMapView!
+    var pins = [NSManagedObject]()
+    
+    // variable used to ensure only one pin is dropped on LongPress
     var pressedDown: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         mapView.delegate = self
         
+        // sets zoom location before load
         let latitude: Double = Double(NSUserDefaults.standardUserDefaults().floatForKey("mapLatitude"))
         let longitude: Double = Double(NSUserDefaults.standardUserDefaults().floatForKey("mapLongitude"))
         let latitudeSpan = Double(NSUserDefaults.standardUserDefaults().floatForKey("latitudeDelta"))
@@ -26,9 +32,9 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
         let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: span)
         mapView.setRegion(region, animated: true)
         
-        print(mapView.region.span)
+        // set longPressGesture to the mapView
         longPressGestureActivated()
-        // Do any additional setup after loading the view, typically from a nib.
+        preLoadMap()
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,6 +42,36 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    func preLoadMap() {
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let stackContext = appDelegate.stack.context
+        let fetchedRequest = NSFetchRequest(entityName: "LocationPin")
+        
+        do {
+            let results = try stackContext.executeFetchRequest(fetchedRequest)
+            pins = results as! [NSManagedObject]
+            addPinsToMap()
+        } catch {
+            
+        }
+    }
+    
+    func addPinsToMap() {
+        if (pins.count > 0) {
+            
+            for (var i = 0; i < pins.count; i += 1){
+                let point = MKPointAnnotation()
+                let certainPin = pins[i] as! LocationPin
+                let latitudeDouble = certainPin.latitude as! Double
+                let longitudeDouble = certainPin.longitude as! Double
+                let coordinate = CLLocationCoordinate2D(latitude: latitudeDouble, longitude: longitudeDouble)
+                point.coordinate = coordinate
+                mapView.addAnnotation(point)
+            }
+        }
+    }
+    
     func getPinLocation(press: UILongPressGestureRecognizer) {
         
         if (pressedDown == false){ // makes sure multiple pins don't get added to the map
@@ -50,8 +86,10 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
         
     }
 
+    // persists the location of the zoom
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-       let Cl2D = mapView.region
+       
+        let Cl2D = mapView.region
         let latitudeFloat = Float (Cl2D.center.latitude)
         let longitudeFloat = Float(Cl2D.center.longitude)
         let coordinateSpan = mapView.region.span
@@ -64,14 +102,29 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
     }
     func addLocationToMap(location: CLLocationCoordinate2D){
         // TODO: check to see if the pin alread contains a location
-        print(mapView.region.center)
         // Add the annotation to the map
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = location
-        mapView.addAnnotation(annotation)
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let stackContext = appDelegate.stack.context
+        let entity = NSEntityDescription.entityForName("LocationPin", inManagedObjectContext: stackContext)
+        let pin = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: stackContext)
+        pin.setValue(location.latitude, forKey: "latitude")
+        pin.setValue(location.longitude, forKey: "longitude")
+        
+        do {
+            try stackContext.save()
+            //5
+            pins.append(pin) // if there is an error here, pin won't be posted to the map.
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = location
+            mapView.addAnnotation(annotation)
+        } catch let error as NSError  {
+            print("Could not save \(error), \(error.userInfo)")
+        }
+
     }
     
-    
+    // sets the long press to the mapView
     func longPressGestureActivated () {
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(TravelLocationsViewController.getPinLocation(_:)))

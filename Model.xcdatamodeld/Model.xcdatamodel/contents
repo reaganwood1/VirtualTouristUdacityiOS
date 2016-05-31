@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+    <entity name="LocationImage" representedClassName=".LocationImage" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="locationPin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LocationPin" inverseName="locationImage" inverseEntity="LocationPin" syncable="YES"/>
+    </entity>
+    <entity name="LocationPin" representedClassName=".LocationPin" syncable="YES">
+        <attribute name="latitude" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="locationImage" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LocationImage" inverseName="locationPin" inverseEntity="LocationImage" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="LocationPin" positionX="-63" positionY="-18" width="128" height="90"/>
+        <element name="LocationImage" positionX="-54" positionY="9" width="128" height="75"/>
+    </elements>
+</model>

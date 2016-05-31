@@ -13,8 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    let stack = CoreDataStack(modelName: "Model")!
+    
+    // sets location of first zoom on first launch
     func firstLaunchZoom () {
+        
         if (!NSUserDefaults.standardUserDefaults().boolForKey("hasLaunched")){
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasLaunched")
             NSUserDefaults.standardUserDefaults().setFloat(42, forKey: "mapLatitude")

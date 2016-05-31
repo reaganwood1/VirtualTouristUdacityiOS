@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		7F5210511CFB89A400BA95D5 /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5210501CFB89A400BA95D5 /* PhotoCollectionViewController.swift */; };
+		7F5210541CFBA6DA00BA95D5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7F5210521CFBA6DA00BA95D5 /* Model.xcdatamodeld */; };
+		7F5210581CFBB41C00BA95D5 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5210571CFBB41C00BA95D5 /* CoreDataStack.swift */; };
+		7F52105A1CFBCB2800BA95D5 /* CoreDataCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5210591CFBCB2800BA95D5 /* CoreDataCollectionViewController.swift */; };
+		7F52105C1CFC998900BA95D5 /* CoreDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F52105B1CFC998900BA95D5 /* CoreDataTableViewController.swift */; };
+		7F5210611CFCFFD400BA95D5 /* LocationPin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F52105D1CFCFFD400BA95D5 /* LocationPin+CoreDataProperties.swift */; };
+		7F5210621CFCFFD400BA95D5 /* LocationPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F52105E1CFCFFD400BA95D5 /* LocationPin.swift */; };
+		7F5210631CFCFFD400BA95D5 /* LocationImage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F52105F1CFCFFD400BA95D5 /* LocationImage+CoreDataProperties.swift */; };
+		7F5210641CFCFFD400BA95D5 /* LocationImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5210601CFCFFD400BA95D5 /* LocationImage.swift */; };
 		7FBEFE361CFA7179002BA9BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE351CFA7179002BA9BB /* AppDelegate.swift */; };
 		7FBEFE381CFA7179002BA9BB /* TravelLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */; };
 		7FBEFE3B1CFA7179002BA9BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FBEFE391CFA7179002BA9BB /* Main.storyboard */; };
@@ -37,6 +45,14 @@
 
 /* Begin PBXFileReference section */
 		7F5210501CFB89A400BA95D5 /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
+		7F5210531CFBA6DA00BA95D5 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		7F5210571CFBB41C00BA95D5 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStack.swift; path = ../../../../Downloads/CoreDataStack.swift; sourceTree = "<group>"; };
+		7F5210591CFBCB2800BA95D5 /* CoreDataCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataCollectionViewController.swift; sourceTree = "<group>"; };
+		7F52105B1CFC998900BA95D5 /* CoreDataTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTableViewController.swift; sourceTree = "<group>"; };
+		7F52105D1CFCFFD400BA95D5 /* LocationPin+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LocationPin+CoreDataProperties.swift"; path = "../LocationPin+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7F52105E1CFCFFD400BA95D5 /* LocationPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationPin.swift; path = ../LocationPin.swift; sourceTree = "<group>"; };
+		7F52105F1CFCFFD400BA95D5 /* LocationImage+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LocationImage+CoreDataProperties.swift"; path = "../LocationImage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7F5210601CFCFFD400BA95D5 /* LocationImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationImage.swift; path = ../LocationImage.swift; sourceTree = "<group>"; };
 		7FBEFE321CFA7179002BA9BB /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FBEFE351CFA7179002BA9BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationsViewController.swift; sourceTree = "<group>"; };
@@ -135,6 +151,12 @@
 		7FBEFE651CFA76C7002BA9BB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7F5210521CFBA6DA00BA95D5 /* Model.xcdatamodeld */,
+				7F5210601CFCFFD400BA95D5 /* LocationImage.swift */,
+				7F52105F1CFCFFD400BA95D5 /* LocationImage+CoreDataProperties.swift */,
+				7F52105E1CFCFFD400BA95D5 /* LocationPin.swift */,
+				7F52105D1CFCFFD400BA95D5 /* LocationPin+CoreDataProperties.swift */,
+				7F5210571CFBB41C00BA95D5 /* CoreDataStack.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -150,6 +172,8 @@
 		7FBEFE681CFA76E3002BA9BB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7F5210591CFBCB2800BA95D5 /* CoreDataCollectionViewController.swift */,
+				7F52105B1CFC998900BA95D5 /* CoreDataTableViewController.swift */,
 				7FBEFE371CFA7179002BA9BB /* TravelLocationsViewController.swift */,
 				7F5210501CFB89A400BA95D5 /* PhotoCollectionViewController.swift */,
 			);
@@ -287,9 +311,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F5210631CFCFFD400BA95D5 /* LocationImage+CoreDataProperties.swift in Sources */,
+				7F5210621CFCFFD400BA95D5 /* LocationPin.swift in Sources */,
+				7F52105C1CFC998900BA95D5 /* CoreDataTableViewController.swift in Sources */,
+				7F5210581CFBB41C00BA95D5 /* CoreDataStack.swift in Sources */,
+				7F5210611CFCFFD400BA95D5 /* LocationPin+CoreDataProperties.swift in Sources */,
+				7F52105A1CFBCB2800BA95D5 /* CoreDataCollectionViewController.swift in Sources */,
+				7F5210641CFCFFD400BA95D5 /* LocationImage.swift in Sources */,
 				7FBEFE381CFA7179002BA9BB /* TravelLocationsViewController.swift in Sources */,
 				7F5210511CFB89A400BA95D5 /* PhotoCollectionViewController.swift in Sources */,
 				7FBEFE361CFA7179002BA9BB /* AppDelegate.swift in Sources */,
+				7F5210541CFBA6DA00BA95D5 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +567,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7F5210521CFBA6DA00BA95D5 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7F5210531CFBA6DA00BA95D5 /* Model.xcdatamodel */,
+			);
+			currentVersion = 7F5210531CFBA6DA00BA95D5 /* Model.xcdatamodel */;
+			name = Model.xcdatamodeld;
+			path = ../Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7FBEFE2A1CFA7179002BA9BB /* Project object */;
 }
