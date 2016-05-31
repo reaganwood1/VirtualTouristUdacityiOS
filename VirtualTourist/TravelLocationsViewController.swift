@@ -139,9 +139,9 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
+            pinView!.canShowCallout = false
             pinView!.pinTintColor = UIColor.redColor()
-            pinView!.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+            //pinView!.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
         }
         else {
             pinView!.annotation = annotation
@@ -150,5 +150,18 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
         return pinView
     } // end function
     
+    // segue to the PhotoAlbumViewController
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+
+        // create the ViewController
+        let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoViewController") as! PhotoAlbumViewController
+
+        // 2. Present the view controller
+        self.navigationController?.pushViewController(photoVC, animated: true)
+        
+        mapView.deselectAnnotation(view.annotation, animated: false)
+        
+//        self.presentViewController(navController, animated: true, completion: nil)
+    }
 }
 
