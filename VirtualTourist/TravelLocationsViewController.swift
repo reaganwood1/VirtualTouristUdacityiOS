@@ -59,10 +59,9 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
     
     func addPinsToMap() {
         if (pins.count > 0) {
-            
-            for (var i = 0; i < pins.count; i += 1){
+            for obj in pins{
                 let point = MKPointAnnotation()
-                let certainPin = pins[i] as! LocationPin
+                let certainPin = obj as! LocationPin
                 let latitudeDouble = certainPin.latitude as! Double
                 let longitudeDouble = certainPin.longitude as! Double
                 let coordinate = CLLocationCoordinate2D(latitude: latitudeDouble, longitude: longitudeDouble)
