@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(application: UIApplication, didFinishLaunchingithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         firstLaunchZoom()
         // Override point for customization after application launch.
         return true

@@ -14,6 +14,7 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
 
     @IBOutlet weak var mapView: MKMapView!
     var pins = [NSManagedObject]()
+    var locationPin: NSManagedObject?
     
     // variable used to ensure only one pin is dropped on LongPress
     var pressedDown: Bool = false
@@ -152,16 +153,33 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
     
     // segue to the PhotoAlbumViewController
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-
+        
         // create the ViewController
         let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoViewController") as! PhotoAlbumViewController
-
+        
+        let clickedPinLat = view.annotation?.coordinate.latitude
+        let clickedPinLong = view.annotation?.coordinate.longitude
+        
+        for obj in pins{
+            let certainPin = obj as! LocationPin
+            let latitudeDouble = certainPin.latitude as! Double
+            let longitudeDouble = certainPin.longitude as! Double
+            
+            if (clickedPinLat == latitudeDouble && clickedPinLong == longitudeDouble) {
+                photoVC.nsPin = obj
+                FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitudeDouble, longitude: longitudeDouble)
+                break
+            }
+        }
+        
+        
+        // set the location
+        photoVC.pin = view.annotation
+        
         // 2. Present the view controller
-        self.navigationController?.pushViewController(photoVC, animated: true)
+//        self.navigationController?.pushViewController(photoVC, animated: true)
+//        mapView.deselectAnnotation(view.annotation, animated: false)
         
-        mapView.deselectAnnotation(view.annotation, animated: false)
-        
-//        self.presentViewController(navController, animated: true, completion: nil)
     }
 }
 
