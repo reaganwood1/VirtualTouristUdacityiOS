@@ -31,8 +31,6 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
         let longitudeSpan = Double(NSUserDefaults.standardUserDefaults().stringForKey("longitudeDelta")!)
         let span = MKCoordinateSpan(latitudeDelta: latitudeSpan!, longitudeDelta: longitudeSpan!)
         let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: span)
-        print(latitude)
-        print(longitude)
         mapView.setRegion(region, animated: true)
         // set longPressGesture to the mapView
         longPressGestureActivated()
@@ -163,7 +161,7 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         
         // create the ViewController
-        let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoViewController") as! PhotoAlbumViewController
+        let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoViewWithDelegates") as! PhotoAlbumMapViewController
         
         let clickedPinLat = view.annotation?.coordinate.latitude
         let clickedPinLong = view.annotation?.coordinate.longitude
@@ -175,21 +173,32 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
             
             if (clickedPinLat == latitudeDouble && clickedPinLong == longitudeDouble) {
                 photoVC.nsPin = obj
-                FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitudeDouble, longitude: longitudeDouble, completionHandler: { (success, error) in
+                FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitudeDouble, longitude: longitudeDouble, completionHandler: { (success, photoArray, error) in
                     
+                    if success == true {
+                        // set the location
+                        photoVC.pin = view.annotation
+                        photoVC.photoURLs = photoArray
+                        
+                       
+                        
+                        // once you have this, run the handler completionHandler!
+                        dispatch_async(dispatch_get_main_queue(), {()-> Void in
+                            
+                            //2. Present the view controller
+                            self.navigationController?.pushViewController(photoVC, animated: true)
+                            mapView.deselectAnnotation(view.annotation, animated: false)
+                            
+                        }) // end image main queue completion handler
+                        
+                        
+                    }else {
+                        print("this didn't work")
+                    }
                 })
                 break
             }
         }
-        
-        
-        // set the location
-        photoVC.pin = view.annotation
-        
-        // 2. Present the view controller
-//        self.navigationController?.pushViewController(photoVC, animated: true)
-//        mapView.deselectAnnotation(view.annotation, animated: false)
-        
     }
 }
 

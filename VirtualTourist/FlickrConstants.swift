@@ -31,6 +31,7 @@ extension FlickrClient {
         static let TotalPages = "total"
         static let PhotoID = "id"
         static let PhotoTitle = "title"
+        static let MediumURL = "url_m"
     }
     
     struct FlickrParameterKeys {
