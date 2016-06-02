@@ -94,6 +94,81 @@
             </objects>
             <point key="canvasLocation" x="2544" y="349"/>
         </scene>
+        <!--Photo Album Map View Controller-->
+        <scene sceneID="cPC-BB-UnW">
+            <objects>
+                <viewController storyboardIdentifier="PhotoViewWithDelegates" id="Ba0-ak-MwO" customClass="PhotoAlbumMapViewController" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vLS-qK-emH"/>
+                        <viewControllerLayoutGuide type="bottom" id="bPA-Wb-6fT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gUu-vF-otv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6Jw-4x-pHm">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="248"/>
+                            </mapView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ygg-dy-skU">
+                                <rect key="frame" x="0.0" y="248" width="600" height="352"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ydS-dC-XrQ">
+                                    <size key="itemSize" width="117" height="107"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="bgI-36-s4Z" customClass="FlickrCollectionViewCell" customModule="VirtualTourist" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="117" height="107"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="117" height="107"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="H9U-Cm-pmB">
+                                                    <rect key="frame" x="0.0" y="0.0" width="117" height="107"/>
+                                                </imageView>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="vk0-eq-ur6">
+                                                    <rect key="frame" x="48" y="44" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="H9U-Cm-pmB" firstAttribute="leading" secondItem="bgI-36-s4Z" secondAttribute="leadingMargin" constant="-8" id="40v-pv-AlA"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="vk0-eq-ur6" secondAttribute="bottom" constant="35" id="7W6-cg-OXe"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="vk0-eq-ur6" secondAttribute="trailing" constant="41" id="NcI-vr-vV4"/>
+                                            <constraint firstItem="vk0-eq-ur6" firstAttribute="leading" secondItem="bgI-36-s4Z" secondAttribute="leadingMargin" constant="40" id="O1h-jI-4or"/>
+                                            <constraint firstItem="H9U-Cm-pmB" firstAttribute="top" secondItem="bgI-36-s4Z" secondAttribute="topMargin" constant="-8" id="Oa7-Fz-Id6"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="H9U-Cm-pmB" secondAttribute="trailing" constant="-8" id="fBl-O4-onY"/>
+                                            <constraint firstItem="vk0-eq-ur6" firstAttribute="top" secondItem="bgI-36-s4Z" secondAttribute="topMargin" constant="36" id="mPt-vN-e0l"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="H9U-Cm-pmB" secondAttribute="bottom" constant="-8" id="tiA-Sr-PPD"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="flickrActivityIndicator" destination="vk0-eq-ur6" id="U4P-9V-rp2"/>
+                                            <outlet property="flickrImage" destination="H9U-Cm-pmB" id="UZw-kc-v1F"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6Jw-4x-pHm" firstAttribute="top" secondItem="gUu-vF-otv" secondAttribute="topMargin" id="7zu-sv-yni"/>
+                            <constraint firstItem="Ygg-dy-skU" firstAttribute="leading" secondItem="gUu-vF-otv" secondAttribute="leadingMargin" constant="-20" id="C5y-hB-QZh"/>
+                            <constraint firstItem="bPA-Wb-6fT" firstAttribute="top" secondItem="6Jw-4x-pHm" secondAttribute="bottom" constant="352" id="S5c-s9-AuT"/>
+                            <constraint firstItem="bPA-Wb-6fT" firstAttribute="top" secondItem="Ygg-dy-skU" secondAttribute="bottom" id="cig-77-gEN"/>
+                            <constraint firstItem="6Jw-4x-pHm" firstAttribute="leading" secondItem="gUu-vF-otv" secondAttribute="leadingMargin" constant="-20" id="hDP-q5-wTH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ygg-dy-skU" secondAttribute="trailing" constant="-20" id="oBA-UB-lNG"/>
+                            <constraint firstItem="Ygg-dy-skU" firstAttribute="top" secondItem="6Jw-4x-pHm" secondAttribute="bottom" id="qZW-vH-qyb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6Jw-4x-pHm" secondAttribute="trailing" constant="-20" id="yMH-8y-TjT"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tLO-nJ-2cQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3264" y="349"/>
+        </scene>
         <!--Photo Album View Controller-->
         <scene sceneID="Zsz-c6-a1h">
             <objects>
