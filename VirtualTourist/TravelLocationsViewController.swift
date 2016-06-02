@@ -25,14 +25,15 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
         mapView.delegate = self
         
         // sets zoom location before load
-        let latitude: Double = Double(NSUserDefaults.standardUserDefaults().floatForKey("mapLatitude"))
-        let longitude: Double = Double(NSUserDefaults.standardUserDefaults().floatForKey("mapLongitude"))
-        let latitudeSpan = Double(NSUserDefaults.standardUserDefaults().floatForKey("latitudeDelta"))
-        let longitudeSpan = Double(NSUserDefaults.standardUserDefaults().floatForKey("longitudeDelta"))
-        let span = MKCoordinateSpan(latitudeDelta: latitudeSpan, longitudeDelta: longitudeSpan)
+        let latitude: Double = Double(NSUserDefaults.standardUserDefaults().stringForKey("mapLatitude")!)!
+        let longitude: Double = Double(NSUserDefaults.standardUserDefaults().stringForKey("mapLongitude")!)!
+        let latitudeSpan = Double(NSUserDefaults.standardUserDefaults().stringForKey("latitudeDelta")!)
+        let longitudeSpan = Double(NSUserDefaults.standardUserDefaults().stringForKey("longitudeDelta")!)
+        let span = MKCoordinateSpan(latitudeDelta: latitudeSpan!, longitudeDelta: longitudeSpan!)
         let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: span)
+        print(latitude)
+        print(longitude)
         mapView.setRegion(region, animated: true)
-        
         // set longPressGesture to the mapView
         longPressGestureActivated()
         preLoadMap()
@@ -90,15 +91,22 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
        
         let Cl2D = mapView.region
-        let latitudeFloat = Float (Cl2D.center.latitude)
-        let longitudeFloat = Float(Cl2D.center.longitude)
+        let latitudeString = String(Cl2D.center.latitude)
+        let longitudeString = String(Cl2D.center.longitude)
         let coordinateSpan = mapView.region.span
-        let floatLatitudeSpan = Float(coordinateSpan.latitudeDelta)
-        let floatLongitudeSpan = Float(coordinateSpan.longitudeDelta)
-        NSUserDefaults.standardUserDefaults().setFloat(latitudeFloat, forKey: "mapLatitude")
-        NSUserDefaults.standardUserDefaults().setFloat(longitudeFloat, forKey: "mapLongitude")
-        NSUserDefaults.standardUserDefaults().setFloat(floatLatitudeSpan, forKey: "latitudeDelta")
-        NSUserDefaults.standardUserDefaults().setFloat(floatLongitudeSpan, forKey: "longitudeDelta")
+        let floatLatitudeSpanString = String(coordinateSpan.latitudeDelta)
+        let floatLongitudeSpanString = String(coordinateSpan.longitudeDelta)
+        print(longitudeString)
+        print(latitudeString)
+        //NSUserDefaults.standardUserDefaults().setFloat(latitudeFloat, forKey: "mapLatitude")
+        NSUserDefaults.standardUserDefaults().setObject(latitudeString, forKey: "mapLatitude")
+        //NSUserDefaults.standardUserDefaults().setFloat(longitudeFloat, forKey: "mapLongitude")
+        NSUserDefaults.standardUserDefaults().setObject(longitudeString, forKey: "mapLongitude")
+        //NSUserDefaults.standardUserDefaults().setFloat(floatLatitudeSpan, forKey: "latitudeDelta")
+        NSUserDefaults.standardUserDefaults().setObject(floatLatitudeSpanString, forKey: "latitudeDelta")
+        //NSUserDefaults.standardUserDefaults().setFloat(floatLongitudeSpan, forKey: "longitudeDelta")
+        NSUserDefaults.standardUserDefaults().setObject(floatLongitudeSpanString, forKey: "longitudeDelta")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     func addLocationToMap(location: CLLocationCoordinate2D){
         // TODO: check to see if the pin alread contains a location
@@ -167,7 +175,9 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
             
             if (clickedPinLat == latitudeDouble && clickedPinLong == longitudeDouble) {
                 photoVC.nsPin = obj
-                FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitudeDouble, longitude: longitudeDouble)
+                FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitudeDouble, longitude: longitudeDouble, completionHandler: { (success, error) in
+                    
+                })
                 break
             }
         }

@@ -20,10 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (!NSUserDefaults.standardUserDefaults().boolForKey("hasLaunched")){
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "hasLaunched")
-            NSUserDefaults.standardUserDefaults().setFloat(42, forKey: "mapLatitude")
-            NSUserDefaults.standardUserDefaults().setFloat(-96, forKey: "mapLongitude")
-            NSUserDefaults.standardUserDefaults().setFloat(115.49179218053267, forKey: "latitudeDelta")
-            NSUserDefaults.standardUserDefaults().setFloat(179.97740153887872, forKey: "longitudeDelta")
+            //NSUserDefaults.standardUserDefaults().setFloat(42, forKey: "mapLatitude")
+            NSUserDefaults.standardUserDefaults().setObject("42", forKey: "mapLatitude")
+            //NSUserDefaults.standardUserDefaults().setFloat(-96, forKey: "mapLongitude")
+            NSUserDefaults.standardUserDefaults().setObject("-96", forKey: "mapLongitude")
+            //NSUserDefaults.standardUserDefaults().setFloat(115.49179218053267, forKey: "latitudeDelta")
+            NSUserDefaults.standardUserDefaults().setObject("115.49179218053267", forKey: "latitudeDelta")
+            //NSUserDefaults.standardUserDefaults().setFloat(179.97740153887872, forKey: "longitudeDelta")
+            NSUserDefaults.standardUserDefaults().setObject("179.97740153887872", forKey: "longitudeDelta")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
@@ -51,6 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        firstLaunchZoom()
     }
 
     func applicationWillTerminate(application: UIApplication) {

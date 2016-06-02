@@ -10,14 +10,28 @@ import Foundation
 
 extension FlickrClient {
    
-    func retrievePhotosFromFlickr(latitude: Double, longitude: Double) {
+    func retrievePhotosFromFlickr(latitude: Double, longitude: Double, completionHandler: (success: Bool, error: String) -> Void) {
         let methodParameters: [String:AnyObject] = [FlickrParameterKeys.Method: FlickParameterValues.GetPhotosMethod, FlickrParameterKeys.APIKey: FlickParameterValues.APIKey, FlickrParameterKeys.Extras: FlickParameterValues.MediumURL, FlickrParameterKeys.ResponseFormat: FlickParameterValues.ResponseFormat, FlickrParameterKeys.NoJSONCallback: FlickParameterValues.JSONCallback, FlickrParameterKeys.Bbox: bboxString(latitude, longitude: longitude)]
         
         taskForGetMethod(methodParameters) { (result, error) in
             
             if error == nil {
-                print (result)
+                print(result)
+                if let photoDictionary = result[FlickrJSONResponseKeys.Photos] as? [String:AnyObject]{
+                    print("success")
+                    if let photoCountString = photoDictionary[FlickrJSONResponseKeys.TotalPages] as? String {
+                        if let photoCountInt = Int(photoCountString) {
+                            print("fucktheFuck")
+                        }
+                    }
+                } else {
+                    completionHandler(success: false, error: "could not parse into photos array")
+                }
+            } else {
+                completionHandler(success: false, error: "Could not get photo URLs")
             }
+            
+            
         }
     }
     

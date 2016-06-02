@@ -164,6 +164,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="6Jw-4x-pHm" secondAttribute="trailing" constant="-20" id="yMH-8y-TjT"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="6Jw-4x-pHm" id="5aE-v7-JTR"/>
+                        <outlet property="photoAlbumCollectionView" destination="Ygg-dy-skU" id="tVo-o0-63V"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tLO-nJ-2cQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
