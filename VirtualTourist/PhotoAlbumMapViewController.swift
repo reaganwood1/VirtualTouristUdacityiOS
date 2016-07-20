@@ -30,11 +30,12 @@ class PhotoAlbumMapViewController: UIViewController, UICollectionViewDelegate, M
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(photoURLs.count)
         return photoURLs.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
+        print(indexPath.row)
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as! FlickrCollectionViewCell
         cell.flickrActivityIndicator.startAnimating()
         
