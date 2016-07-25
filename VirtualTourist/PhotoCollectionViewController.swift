@@ -20,6 +20,7 @@ class PhotoCollectionViewController: UIViewController {
     var stack: CoreDataStack!
     var indexes = [NSIndexPath]()
     var photoURLs = [String]()
+    var deleteNeededVariables = [NSIndexPath]()
     
     // Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -31,8 +32,9 @@ class PhotoCollectionViewController: UIViewController {
         didSet{
             fetchedResultsController?.delegate = self
             completeSearch()
-            performUIUpdatesOnMain(self.flickrPhotoCollectionView.reloadData())
-            
+            performUIUpdatesOnMain { 
+                self.flickrPhotoCollectionView.reloadData()
+            }
         }
     }
     
@@ -69,19 +71,99 @@ class PhotoCollectionViewController: UIViewController {
             
             if let mapPin = locationOfPin {
                 newCollectionButton.enabled = false
-                
-                
-            }
-        }
+                getPhotos(mapPin, completionHandler: { (success, count, errorString) in
+                    performUIUpdatesOnMain({ 
+                        if success == false {
+                            self.newCollectionButton.enabled = true
+                            print("error in getPhotos")
+                        } else {
+                            do {
+                                try self.fetchedResultsController!.managedObjectContext.save()
+                            }catch {
+                                print("nothing was saved")
+                            }
+                        } // end else
+                    }) // end UIUpdates
+                    
+                    if count == 0 {
+                        self.flickrPhotoCollectionView.hidden = true
+                    } else {
+                        self.flickrPhotoCollectionView.hidden = false
+                    }
+                    
+                    self.newCollectionButton.enabled = true
+                }) // end get photos
+            } // end if for mapPin
+        } // end if for fetchedObject count
     } // end function
     
-    // request more Photos for this Pin from Flickr and store in CORE Data
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    @IBAction func createNewCollectionButtonSelected(sender: AnyObject) {
+        
+        if newCollectionButton.titleLabel!.text == "New Collection" {
+            if let locPin = locationOfPin {
+                
+                newCollectionButton.enabled = false
+                
+                clearImages(locPin)
+                
+                getPhotos(locPin, completionHandler: { (success, count, errorString) in
+                    
+                    performUIUpdatesOnMain({ 
+                        if success == false {
+                            self.newCollectionButton.enabled = true
+                            print("error")
+                        } else {
+                            do {
+                                try self.fetchedResultsController!.managedObjectContext.save()
+                            } catch {
+                                print("could not save")
+                            } // end catch
+                        } // end else
+                    }) // end performUIUpdates
+                    
+                    if count == 0 {
+                        self.flickrPhotoCollectionView.hidden = true
+                    } else {
+                        self.flickrPhotoCollectionView.hidden = false
+                    } // end else 
+                    
+                    self.newCollectionButton.enabled = true
+                }) // end get photos handler
+            } // end if
+            
+        } else { // end if for title
+            if let indexes = flickrPhotoCollectionView.indexPathsForSelectedItems() {
+                for thisIndex in indexes {
+                    let thisPhoto = fetchedResultsController!.objectAtIndexPath(thisIndex) as! LocationImage
+                    self.fetchedResultsController!.managedObjectContext.deleteObject(thisPhoto)
+                } // end for
+            } // end if
+            
+            newCollectionButton.setTitle("New Collection", forState: .Normal)
+        } // end else
+    } // end function
+    
+    // remove the photos from the fetched results and coredata
+    func clearImages(pin: LocationPin) {
+  
+        if let pins = pin.locationImage!.allObjects as? [LocationImage] {
+            for photo in pins {
+                self.fetchedResultsController!.managedObjectContext.deleteObject(photo)
+            }
+        } // end if
+    } // end function
+    
+    // get more photos for pin and store them in coreData
     func getPhotos(pin: LocationPin, completionHandler: (success: Bool, count: Int, errorString: String?) -> Void) {
         
         guard let latitude = pin.latitude as? Double, longitude = pin.longitude as? Double else {
             completionHandler(success: false, count: 0, errorString: "Could not get photos")
             return
-        }
+        } // end guard
         
         FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitude, longitude: longitude) { (success, photoURLs, error) in
             
@@ -92,43 +174,26 @@ class PhotoCollectionViewController: UIViewController {
             }
             
             if photoURLs.count > 0 {
-                for url in photoURLs {
-                    let newPhoto = LocationImage (
-                }
-            }
-        }
-        
-        
-        //print("initiate Flickr request")
-        FlickrClient.sharedInstance().getLocationPhotos(latitude, longitude: longitude) { (success, error, results) in
-            
-            if success == false {
-                completionHandler(success: false, count: 0, errorString: "Photos could not be retrieved")
-                return
-            }
-            
-            if let photos = results {
+                self.photoURLs = photoURLs
                 
-                print("creating new Photos in CORE Data")
-                for url in photos {
-                    let photo = Photo(url: url, context: self.fetchedResultsController!.managedObjectContext)
-                    photo.pin = self.selectedPin
-                }
+                for url in self.photoURLs {
+                    
+                    FlickrClient.sharedInstance().getPhotoImage(url, completionHandler: { (image, success) in
+                        
+                        let photoData = LocationImage(image: image!, context: self.fetchedResultsController!.managedObjectContext)
+                        photoData.locationPin = self.locationOfPin
+                    }) // end closure
+                } // end for
                 
-                performUIUpdatesOnMain {
-                    // needed because 'insert' event never fires for the frc
+                performUIUpdatesOnMain({ 
                     self.completeSearch()
-                    self.photosCollectionView.reloadData()
-                }
+                    self.flickrPhotoCollectionView.reloadData()
+                })
                 
-                print("new cell count provided by Flickr request for photos: \(urls.count)")
-                completionHandler(success: true, count: urls.count, errorMessage: nil)
-                
-            } else {
-                completionHandler(success: false, count: 0, errorMessage: "Error getting photo urls")
-            }
+                completionHandler(success: true, count: photoURLs.count, errorString: nil)
+            } // end completion handler for retrivePhotosFromFlickr
         }
-    }
+    } // end function
 } // end class
 
 extension PhotoCollectionViewController {
@@ -142,4 +207,104 @@ extension PhotoCollectionViewController {
             }
         }
     }
+} // end extension
+
+extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let rowNumber = 3
+        let layout = collectionViewLayout as! UICollectionViewFlowLayout
+        let space = layout.sectionInset.left + layout.sectionInset.right + (layout.minimumInteritemSpacing * CGFloat(rowNumber - 1))
+        let rowSize = Int((collectionView.bounds.width - space) / CGFloat(rowNumber))
+        return CGSize(width: rowSize, height: rowSize)
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let photoCell = collectionView.cellForItemAtIndexPath(indexPath) {
+            photoCell.highlighted = false
+            photoCell.backgroundView!.alpha = 1.0
+        }
+        
+        newCollectionButton.setTitle("Remove Selected Pictures", forState: .Normal)
+    } // end function
+    
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        if let photoCell = collectionView.cellForItemAtIndexPath(indexPath) {
+            photoCell.highlighted = false
+            photoCell.backgroundView!.alpha = 1.0
+        } // end if
+        
+        if flickrPhotoCollectionView.indexPathsForSelectedItems() == nil {
+            newCollectionButton.setTitle("New Collection", forState: .Normal)
+        }
+    } // end function
+    
+    func controller(controller: NSFetchedResultsController,
+                    didChangeObject anObject: AnyObject,
+                                    atIndexPath indexPath: NSIndexPath?,
+                                                forChangeType type: NSFetchedResultsChangeType,
+                                                              newIndexPath: NSIndexPath?) {
+        if let index = indexPath {
+            switch (type) {
+            
+            case .Delete:
+                deleteNeededVariables.append(index)
+            case .Insert:
+                flickrPhotoCollectionView.insertItemsAtIndexPaths([index])
+            case .Update:
+                flickrPhotoCollectionView.reloadItemsAtIndexPaths([index])
+            default:
+                print("there was a photo change that was not registered: \(index)")
+            } // end switch
+        } // end if
+    } // end function
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        
+        if deleteNeededVariables.count > 0 {
+            flickrPhotoCollectionView.deleteItemsAtIndexPaths(deleteNeededVariables)
+            deleteNeededVariables.removeAll()
+        } // end if
+    } // end function
+} // end extension
+
+extension PhotoCollectionViewController: UICollectionViewDataSource {
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        let photoCell = collectionView.dequeueReusableCellWithReuseIdentifier("flickrPhotoCollectionViewCell", forIndexPath: indexPath) as! FlickrCollectionViewCell
+        
+        photoCell.flickrActivityIndicator.stopAnimating()
+        
+        photoCell.userInteractionEnabled = true
+        
+//        if let imagePhoto = fetchedResultsController?.objectAtIndexPath(indexPath) as! LocationImage {
+//        
+//        }
+        
+        let imagePhoto = fetchedResultsController?.objectAtIndexPath(indexPath) as! LocationImage
+        let imageData = imagePhoto.image
+        let photo = UIImage(data: imageData!)
+        let view = UIImageView(image: photo)
+        photoCell.backgroundView = view
+        photoCell.backgroundView!.alpha = 0.1
+        if photoCell.selected == true {
+            photoCell.backgroundView!.alpha = 0.1
+        } else {
+            photoCell.backgroundView!.alpha = 1.0
+        } // end else
+        
+        return photoCell
+    } // end function
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        var count = 0
+        
+        if let objects = fetchedResultsController?.fetchedObjects {
+            count = objects.count
+        }
+        
+        return count
+    } // end function
 } // end extension

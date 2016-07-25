@@ -15,7 +15,7 @@ class LocationImage: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
 
     
-    convenience init(url: String, context : NSManagedObjectContext){
+    convenience init(image: NSData, context : NSManagedObjectContext){
         
         // An EntityDescription is an object that has access to all
         // the information you provided in the Entity part of the model
@@ -23,7 +23,7 @@ class LocationImage: NSManagedObject {
         if let ent = NSEntityDescription.entityForName("LocationImage",
                                                        inManagedObjectContext: context){
             self.init(entity: ent, insertIntoManagedObjectContext: context)
-            self.url = url
+            self.image = image
         }else{
             fatalError("Unable to find Entity name!")
         }

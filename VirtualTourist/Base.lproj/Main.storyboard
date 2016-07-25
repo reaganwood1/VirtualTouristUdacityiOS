@@ -244,6 +244,9 @@
                                 <rect key="frame" x="0.0" y="553" width="600" height="47"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="createNewCollectionButtonSelected:" destination="ncn-Ha-JlD" eventType="touchUpInside" id="3K5-tZ-p3A"/>
+                                </connections>
                             </button>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5Gn-vF-cEm">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="205"/>
