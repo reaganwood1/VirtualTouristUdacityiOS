@@ -8,13 +8,14 @@
 
 import Foundation
 import CoreData
-
+import UIKit
 
 class LocationImage: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
 
-    convenience init(image: NSData,  context : NSManagedObjectContext){
+    
+    convenience init(url: String, context : NSManagedObjectContext){
         
         // An EntityDescription is an object that has access to all
         // the information you provided in the Entity part of the model
@@ -22,12 +23,13 @@ class LocationImage: NSManagedObject {
         if let ent = NSEntityDescription.entityForName("LocationImage",
                                                        inManagedObjectContext: context){
             self.init(entity: ent, insertIntoManagedObjectContext: context)
-            self.image = image
+            self.url = url
         }else{
             fatalError("Unable to find Entity name!")
         }
         
     }
+    
     
 //    var humanReadableAge : String{
 //        get{

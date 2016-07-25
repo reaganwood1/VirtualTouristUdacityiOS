@@ -29,4 +29,13 @@ class LocationPin: NSManagedObject {
         }
         
     }
+    
+    // source / inspiration - Jarrod Parkes, a Udacity instructor: https://github.com/jarrodparkes/ios-virtual-tourist/blob/master/VirtualTourist/Photo.swift
+    func deletePhotos(context: NSManagedObjectContext) {
+        if let photos = locationImage {
+            for photo in photos {
+                context.deleteObject(photo as! NSManagedObject)
+            }
+        }
+    } // end function
 }
