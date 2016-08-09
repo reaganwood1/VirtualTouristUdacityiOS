@@ -19,7 +19,7 @@ class FlickrClient: NSObject {
         
         let request = NSURLRequest(URL: flickrURLFromParameters(methodParameters))
         let url = flickrURLFromParameters(methodParameters)
-        print(url)
+        //print(url)
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             
             // function for creating error messages

@@ -17,7 +17,7 @@ class PhotoCollectionViewController: UIViewController {
     var pin: MKAnnotation?
     var photoArray = [LocationImage]()
     var locationOfPin: LocationPin!
-    var stack: CoreDataStack!
+
     var indexes = [NSIndexPath]()
     var photoURLs = [String]()
     var deleteNeededVariables = [NSIndexPath]()
@@ -50,6 +50,9 @@ class PhotoCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        flickrPhotoCollectionView.dataSource = self
+        flickrPhotoCollectionView.delegate = self
+        
         if let pinLocation = pin{
             
             mapView.userInteractionEnabled = false
@@ -59,6 +62,7 @@ class PhotoCollectionViewController: UIViewController {
             let region = MKCoordinateRegion(center: center, span: span)
 
             mapView.setRegion(region, animated: true)
+            mapView.addAnnotation(pinLocation)
         } else {
             print("error retrieving map information")
         }// end if
@@ -190,6 +194,47 @@ class PhotoCollectionViewController: UIViewController {
                     self.flickrPhotoCollectionView.reloadData()
                 })
                 
+                
+                
+                
+                
+                
+                
+//                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//                let stackContext = appDelegate.stack.context
+//                let fetchedRequest = NSFetchRequest(entityName: "LocationImage")
+//                
+//                var images: [NSManagedObject]
+//                // Create a fetchrequest
+//                let fr = NSFetchRequest(entityName: "LocationImage")
+//                fr.sortDescriptors = []
+//                
+//                do {
+//                    let results = try stackContext.executeFetchRequest(fetchedRequest)
+//                    images = results as! [NSManagedObject]
+//                } catch {
+//                    
+//                }
+//                print(self.locationOfPin.locationImage?.allObjects)
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 completionHandler(success: true, count: photoURLs.count, errorString: nil)
             } // end completion handler for retrivePhotosFromFlickr
         }
@@ -222,7 +267,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout, NSF
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let photoCell = collectionView.cellForItemAtIndexPath(indexPath) {
             photoCell.highlighted = false
-            photoCell.backgroundView!.alpha = 1.0
+            photoCell.backgroundView!.alpha = 0.5
         }
         
         newCollectionButton.setTitle("Remove Selected Pictures", forState: .Normal)
@@ -274,7 +319,7 @@ extension PhotoCollectionViewController: UICollectionViewDataSource {
         
         let photoCell = collectionView.dequeueReusableCellWithReuseIdentifier("flickrPhotoCollectionViewCell", forIndexPath: indexPath) as! FlickrCollectionViewCell
         
-        photoCell.flickrActivityIndicator.stopAnimating()
+        //photoCell.flickrActivityIndicator.stopAnimating()
         
         photoCell.userInteractionEnabled = true
         

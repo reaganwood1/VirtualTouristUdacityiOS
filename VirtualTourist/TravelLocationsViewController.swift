@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
+class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate{
 
     @IBOutlet weak var mapView: MKMapView!
     var pins = [NSManagedObject]()
@@ -18,6 +18,24 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
     
     // variable used to ensure only one pin is dropped on LongPress
     var pressedDown: Bool = false
+    
+    var fetchedResultsController : NSFetchedResultsController? {
+        didSet {
+            fetchedResultsController?.delegate = self
+              completeSearch()
+//            mapDataReload()
+        } // end didSet
+    } // end fetchedResultsController declaration
+    
+    init(fetchedResultsController fc : NSFetchedResultsController) {
+        fetchedResultsController = fc
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    // code for objective C
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +65,14 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let stackContext = appDelegate.stack.context
         let fetchedRequest = NSFetchRequest(entityName: "LocationPin")
+        
+        // Create a fetchrequest
+        let fr = NSFetchRequest(entityName: "LocationPin")
+        fr.sortDescriptors = []
+        
+        // Create the FetchedResultsController
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr,
+                                                              managedObjectContext: stackContext, sectionNameKeyPath: nil, cacheName: nil)
         
         do {
             let results = try stackContext.executeFetchRequest(fetchedRequest)
@@ -106,6 +132,7 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
         NSUserDefaults.standardUserDefaults().setObject(floatLongitudeSpanString, forKey: "longitudeDelta")
         NSUserDefaults.standardUserDefaults().synchronize()
     }
+    
     func addLocationToMap(location: CLLocationCoordinate2D){
         // TODO: check to see if the pin alread contains a location
         // Add the annotation to the map
@@ -113,14 +140,16 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let stackContext = appDelegate.stack.context
         let entity = NSEntityDescription.entityForName("LocationPin", inManagedObjectContext: stackContext)
-        let pin = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: stackContext)
-        pin.setValue(location.latitude, forKey: "latitude")
-        pin.setValue(location.longitude, forKey: "longitude")
+        //let pin = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: stackContext)
+        let pin1 = LocationPin(latitude: location.latitude, longitude: location.longitude, context: self.fetchedResultsController!.managedObjectContext)/////
+        completeSearch()
+        pin1.setValue(location.latitude, forKey: "latitude")
+        pin1.setValue(location.longitude, forKey: "longitude")
         
         do {
             try stackContext.save()
             //5
-            pins.append(pin) // if there is an error here, pin won't be posted to the map.
+            pins.append(pin1) // if there is an error here, pin won't be posted to the map.
             let annotation = MKPointAnnotation()
             annotation.coordinate = location
             mapView.addAnnotation(annotation)
@@ -161,42 +190,120 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate{
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         
         // create the ViewController
-        let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoViewWithDelegates") as! PhotoAlbumMapViewController
+        let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumCollectionViewController") as! PhotoCollectionViewController
+        
+        
+        
         
         let clickedPinLat = view.annotation?.coordinate.latitude
         let clickedPinLong = view.annotation?.coordinate.longitude
         
-        for obj in pins{
-            let certainPin = obj as! LocationPin
-            let latitudeDouble = certainPin.latitude as! Double
-            let longitudeDouble = certainPin.longitude as! Double
-            
-            if (clickedPinLat == latitudeDouble && clickedPinLong == longitudeDouble) {
-                photoVC.nsPin = obj
-                FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitudeDouble, longitude: longitudeDouble, completionHandler: { (success, photoArray, error) in
+        
+        // create fetch request for the selected pin
+        let fr = NSFetchRequest(entityName: "LocationPin")
+        fr.sortDescriptors = []
+        let pred = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", clickedPinLat!, clickedPinLong!)
+        fr.predicate = pred
+        completeSearch()
+        
+        if let pins = fetchedResultsController!.fetchedObjects as? [LocationPin] {
+            let PinsAfterFilter = pins.filter({ (p: LocationPin) -> Bool in
+                return p.latitude == clickedPinLat && p.longitude == clickedPinLong
+            })
+            if let thisPin = PinsAfterFilter.first {
+                locationPin = thisPin
+//                var pinny = locationPin as! LocationPin
+                let fetch = NSFetchRequest(entityName: "LocationImage")
+                fetch.sortDescriptors = []
+                let predicate = NSPredicate(format: "locationPin = %@", locationPin!)
+                fetch.predicate = predicate
+                
+               let fc = NSFetchedResultsController(fetchRequest: fetch, managedObjectContext: fetchedResultsController!.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+                
+                print(fc.fetchedObjects?.count)
+                photoVC.locationOfPin = thisPin
+                photoVC.pin = view.annotation
+                photoVC.fetchedResultsController = fc
+                // once you have this, run the handler completionHandler!
                     
-                    if success == true {
-                        // set the location
-                        photoVC.pin = view.annotation
-                        photoVC.photoURLs = photoArray
-                        
-                       
-                        
-                        // once you have this, run the handler completionHandler!
-                        dispatch_async(dispatch_get_main_queue(), {()-> Void in
-                            
-                            //2. Present the view controller
-                            self.navigationController?.pushViewController(photoVC, animated: true)
-                            mapView.deselectAnnotation(view.annotation, animated: false)
-                            
-                        }) // end image main queue completion handler
-                        
-                        
-                    }else {
-                        print("this didn't work")
-                    }
-                })
-                break
+                    //2. Present the view controller
+                    self.navigationController?.pushViewController(photoVC, animated: true)
+                    mapView.deselectAnnotation(view.annotation, animated: false)
+                    
+               
+                
+            }
+        }// end if
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+    } // end function
+//    // segue to the PhotoAlbumViewController
+//    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+//        
+//        // create the ViewController
+//        let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoViewWithDelegates") as! PhotoAlbumMapViewController
+//        
+//        let clickedPinLat = view.annotation?.coordinate.latitude
+//        let clickedPinLong = view.annotation?.coordinate.longitude
+//        
+//        for obj in pins{
+//            let certainPin = obj as! LocationPin
+//            let latitudeDouble = certainPin.latitude as! Double
+//            let longitudeDouble = certainPin.longitude as! Double
+//            
+//            if (clickedPinLat == latitudeDouble && clickedPinLong == longitudeDouble) {
+//                photoVC.nsPin = obj
+//                FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitudeDouble, longitude: longitudeDouble, completionHandler: { (success, photoArray, error) in
+//                    
+//                    if success == true {
+//                        // set the location
+//                        photoVC.pin = view.annotation
+//                        photoVC.photoURLs = photoArray
+//                        
+//                       
+//                        
+//                        // once you have this, run the handler completionHandler!
+//                        dispatch_async(dispatch_get_main_queue(), {()-> Void in
+//                            
+//                            //2. Present the view controller
+//                            self.navigationController?.pushViewController(photoVC, animated: true)
+//                            mapView.deselectAnnotation(view.annotation, animated: false)
+//                            
+//                        }) // end image main queue completion handler
+//                        
+//                        
+//                    }else {
+//                        print("this didn't work")
+//                    }
+//                })
+//                break
+//            } // end lat and lon check
+//        } // end for
+//    } // end function
+}
+
+extension TravelLocationsViewController {
+    
+    func completeSearch(){
+        if let fc = fetchedResultsController{
+            do{
+                try fc.performFetch()
+            }catch let e as NSError{
+                print("Error: could not performa a fetch")
             }
         }
     }

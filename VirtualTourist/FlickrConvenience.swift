@@ -19,17 +19,21 @@ extension FlickrClient {
         taskForGetMethod(methodParameters) { (result, error) in
             
             if error == nil {
-                print(result)
+                //print(result)
                 if let photoDictionary = result[FlickrJSONResponseKeys.Photos] as? [String:AnyObject]{
-                    print("success")
                     if let photoCountString = photoDictionary[FlickrJSONResponseKeys.TotalPages] as? String {
                         if let photoCountInt = Int(photoCountString) {
                             if photoCountInt > 0 {
                                 if let photosDictionary = photoDictionary[FlickrJSONResponseKeys.Photo] as? [[String:AnyObject]]{
                                     
                                     var i: Int = 0
-                                    while (i < photoCountInt && i < 16) {
-                                        let photoInfo = photosDictionary[i] as [String:AnyObject]
+                                    
+                                    while (i < photosDictionary.count && i < 16) {
+                                        
+                                        var j: Int = 0
+                                        j = Int(arc4random_uniform(UInt32(photosDictionary.count)))
+                                        
+                                        let photoInfo = photosDictionary[j] as [String:AnyObject]
                                         if let photoURL = photoInfo[FlickrJSONResponseKeys.MediumURL] as? String {
                                             photoURLArray.append(photoURL)
                                         } else {
