@@ -282,6 +282,9 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout, NSF
         if flickrPhotoCollectionView.indexPathsForSelectedItems() == nil {
             newCollectionButton.setTitle("New Collection", forState: .Normal)
         }
+        if (indexes.count == 0) {
+            newCollectionButton.setTitle("New Collection", forState: .Normal)
+        }
     } // end function
     
     func controller(controller: NSFetchedResultsController,
