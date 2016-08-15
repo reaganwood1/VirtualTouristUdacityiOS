@@ -124,7 +124,7 @@ class PhotoCollectionViewController: UIViewController {
                     performUIUpdatesOnMain({ 
                         if success == false {
                             self.newCollectionButton.enabled = true
-                            print("error")
+                            self.displayEmptyAlert("", message: "Could not Retrieve Photos", actionTitle: "Dismiss")
                         } else {
                             do {
                                 try self.fetchedResultsController!.managedObjectContext.save()
@@ -201,7 +201,9 @@ class PhotoCollectionViewController: UIViewController {
                     self.completeSearch()
                     
                     completionHandler(success: true, count: photoURLs.count, errorString: nil)
-                } // end completion handler for retrivePhotosFromFlickr
+                } else {
+                    self.displayEmptyAlert("", message: "Could not Retrieve Photos", actionTitle: "Dismiss")
+                }// end completion handler for retrivePhotosFromFlickr
             }
 
 //        } else { // no network display error
