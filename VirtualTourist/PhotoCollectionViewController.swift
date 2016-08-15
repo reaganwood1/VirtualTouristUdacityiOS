@@ -153,6 +153,13 @@ class PhotoCollectionViewController: UIViewController {
                     let thisPhoto = fetchedResultsController!.objectAtIndexPath(thisIndex) as! LocationImage
                     self.fetchedResultsController!.managedObjectContext.deleteObject(thisPhoto)
                 } // end for
+                
+                do { // added so data context change is saved in coreData
+                    try self.fetchedResultsController!.managedObjectContext.save()
+                }catch {
+                    print("nothing was saved")
+                }
+
             } // end if
             
             newCollectionButton.setTitle("New Collection", forState: .Normal)
@@ -165,6 +172,12 @@ class PhotoCollectionViewController: UIViewController {
         if let pins = pin.locationImage!.allObjects as? [LocationImage] { // delete the photos for the pin
             for photo in pins {
                 self.fetchedResultsController!.managedObjectContext.deleteObject(photo)
+            }
+            
+            do { // added so data context change is saved in coreData
+                try self.fetchedResultsController!.managedObjectContext.save()
+            }catch {
+                print("nothing was saved")
             }
         } // end if
     } // end function
@@ -190,12 +203,10 @@ class PhotoCollectionViewController: UIViewController {
                     self.photoURLs = photoURLs
                     
                     for url in self.photoURLs {// add each url to context
-                        
-                        FlickrClient.sharedInstance().getPhotoImage(url, completionHandler: { (image, success) in
                             
                             let photoData = LocationImage(imageString: url, context: self.fetchedResultsController!.managedObjectContext)
                             photoData.locationPin = self.locationOfPin
-                        }) // end closure
+                      
                     } // end for
                     
                     self.completeSearch()
@@ -327,37 +338,51 @@ extension PhotoCollectionViewController: UICollectionViewDataSource {
                 photoCell.backgroundView!.alpha = 1.0
             } // end else
         } else {
-            
-            
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) { () -> Void in
-                photoCell.backgroundView = nil
-                photoCell.flickrActivityIndicator.hidden = false
-                photoCell.flickrActivityIndicator.startAnimating()
-                
-                FlickrClient.sharedInstance().getPhotoImage(imagePhoto.urlForImage!, completionHandler: { (image, success) in
+            if (Reachability.isConnectedToNetwork() == true) {
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) { () -> Void in
+                    photoCell.backgroundView = nil
+                    photoCell.flickrActivityIndicator.hidden = false
+                    photoCell.flickrActivityIndicator.startAnimating()
                     
-                    imagePhoto.image = image
-                    
-                    // once you have this, run the handler completionHandler!
-                    dispatch_async(dispatch_get_main_queue(), {()-> Void in
-                        // set image to cell on the main thread
+                    FlickrClient.sharedInstance().getPhotoImage(imagePhoto.urlForImage!, completionHandler: { (image, success) in
+                        
                         let photo = UIImage(data: image!)
                         let view = UIImageView(image: photo)
-                        //photoCell.backgroundView = view
-                        photoCell.backgroundView = view
-                        photoCell.backgroundView!.alpha = 0.1
-                        if photoCell.selected == true {
+                        
+                        dispatch_async(dispatch_get_main_queue(), {()-> Void in
+                            
+                            imagePhoto.image = image
+                            self.completeSearch()
+                            do { // saves to the context so network is not hit unnecessarily again
+                                try self.fetchedResultsController!.managedObjectContext.save()
+                            }catch {
+                                print("nothing was saved")
+                            }
+                            
+                            // set image to cell on the main thread
+                            //photoCell.backgroundView = view
+                            photoCell.backgroundView = view
                             photoCell.backgroundView!.alpha = 0.1
-                        } else {
-                            photoCell.backgroundView!.alpha = 1.0
-                        } // end else
-                        photoCell.flickrActivityIndicator.stopAnimating()
-                        photoCell.flickrActivityIndicator.hidden = true
-                        self.completeSearch()
-                    }) // end image main queue completion handler
-                })
-            } // end closure
-        }
+                            if photoCell.selected == true {
+                                photoCell.backgroundView!.alpha = 0.1
+                            } else {
+                                photoCell.backgroundView!.alpha = 1.0
+                            } // end else
+                            photoCell.flickrActivityIndicator.stopAnimating()
+                            photoCell.flickrActivityIndicator.hidden = true
+                        }) // end image main queue completion handler
+                    })
+                } // end closure
+
+            } else { // handle case where there is no network connection
+                
+                dispatch_async(dispatch_get_main_queue(), {()-> Void in
+                    photoCell.flickrActivityIndicator.hidden = false
+                    photoCell.flickrActivityIndicator.startAnimating()
+                }) // end image main queue completion handler
+            }// end else
+            
+        } // end else
         
         return photoCell
     } // end function

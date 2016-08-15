@@ -120,8 +120,6 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetc
         let coordinateSpan = mapView.region.span
         let floatLatitudeSpanString = String(coordinateSpan.latitudeDelta)
         let floatLongitudeSpanString = String(coordinateSpan.longitudeDelta)
-        print(longitudeString)
-        print(latitudeString)
         NSUserDefaults.standardUserDefaults().setObject(latitudeString, forKey: "mapLatitude")
         NSUserDefaults.standardUserDefaults().setObject(longitudeString, forKey: "mapLongitude")
         NSUserDefaults.standardUserDefaults().setObject(floatLatitudeSpanString, forKey: "latitudeDelta")
@@ -204,7 +202,6 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetc
                 
                let fc = NSFetchedResultsController(fetchRequest: fetch, managedObjectContext: fetchedResultsController!.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
                 
-                print(fc.fetchedObjects?.count)
                 photoVC.locationOfPin = thisPin
                 photoVC.pin = view.annotation
                 photoVC.fetchedResultsController = fc

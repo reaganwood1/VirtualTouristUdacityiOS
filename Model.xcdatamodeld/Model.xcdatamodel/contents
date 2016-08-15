@@ -2,7 +2,7 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
     <entity name="LocationImage" representedClassName=".LocationImage" syncable="YES">
         <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" indexed="YES" syncable="YES"/>
-        <attribute name="urlForImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlForImage" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="locationPin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LocationPin" inverseName="locationImage" inverseEntity="LocationPin" syncable="YES"/>
     </entity>
     <entity name="LocationPin" representedClassName=".LocationPin" syncable="YES">

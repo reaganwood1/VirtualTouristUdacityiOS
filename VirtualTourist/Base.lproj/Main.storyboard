@@ -210,7 +210,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MIo-eZ-6Dr">
                                 <rect key="frame" x="0.0" y="553" width="600" height="47"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="New Collection"/>
                                 <connections>
                                     <action selector="createNewCollectionButtonSelected:" destination="ncn-Ha-JlD" eventType="touchUpInside" id="3K5-tZ-p3A"/>
