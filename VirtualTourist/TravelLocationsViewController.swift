@@ -79,7 +79,7 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetc
             pins = results as! [NSManagedObject]
             addPinsToMap()
         } catch {
-            
+            print("error retrieving NSFetchedResultsController")
         }
     }
     
@@ -122,21 +122,16 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetc
         let floatLongitudeSpanString = String(coordinateSpan.longitudeDelta)
         print(longitudeString)
         print(latitudeString)
-        //NSUserDefaults.standardUserDefaults().setFloat(latitudeFloat, forKey: "mapLatitude")
         NSUserDefaults.standardUserDefaults().setObject(latitudeString, forKey: "mapLatitude")
-        //NSUserDefaults.standardUserDefaults().setFloat(longitudeFloat, forKey: "mapLongitude")
         NSUserDefaults.standardUserDefaults().setObject(longitudeString, forKey: "mapLongitude")
-        //NSUserDefaults.standardUserDefaults().setFloat(floatLatitudeSpan, forKey: "latitudeDelta")
         NSUserDefaults.standardUserDefaults().setObject(floatLatitudeSpanString, forKey: "latitudeDelta")
-        //NSUserDefaults.standardUserDefaults().setFloat(floatLongitudeSpan, forKey: "longitudeDelta")
         NSUserDefaults.standardUserDefaults().setObject(floatLongitudeSpanString, forKey: "longitudeDelta")
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     func addLocationToMap(location: CLLocationCoordinate2D){
-        // TODO: check to see if the pin alread contains a location
-        // Add the annotation to the map
         
+        // add annotation to the context
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let stackContext = appDelegate.stack.context
         let entity = NSEntityDescription.entityForName("LocationPin", inManagedObjectContext: stackContext)
@@ -146,6 +141,7 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetc
         pin1.setValue(location.latitude, forKey: "latitude")
         pin1.setValue(location.longitude, forKey: "longitude")
         
+        // add annotation to map
         do {
             try stackContext.save()
             //5
@@ -191,9 +187,6 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetc
         
         // create the ViewController
         let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumCollectionViewController") as! PhotoCollectionViewController
-        
-        
-        
         
         let clickedPinLat = view.annotation?.coordinate.latitude
         let clickedPinLong = view.annotation?.coordinate.longitude
