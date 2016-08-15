@@ -198,21 +198,12 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetc
         let clickedPinLat = view.annotation?.coordinate.latitude
         let clickedPinLong = view.annotation?.coordinate.longitude
         
-        
-        // create fetch request for the selected pin
-        let fr = NSFetchRequest(entityName: "LocationPin")
-        fr.sortDescriptors = []
-        let pred = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", clickedPinLat!, clickedPinLong!)
-        fr.predicate = pred
-        completeSearch()
-        
         if let pins = fetchedResultsController!.fetchedObjects as? [LocationPin] {
             let PinsAfterFilter = pins.filter({ (p: LocationPin) -> Bool in
                 return p.latitude == clickedPinLat && p.longitude == clickedPinLong
             })
             if let thisPin = PinsAfterFilter.first {
                 locationPin = thisPin
-//                var pinny = locationPin as! LocationPin
                 let fetch = NSFetchRequest(entityName: "LocationImage")
                 fetch.sortDescriptors = []
                 let predicate = NSPredicate(format: "locationPin = %@", locationPin!)
@@ -229,71 +220,11 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate, NSFetc
                     //2. Present the view controller
                     self.navigationController?.pushViewController(photoVC, animated: true)
                     mapView.deselectAnnotation(view.annotation, animated: false)
-                    
-               
                 
             }
         }// end if
         
-        
-        
-        
-        
-        
-        
-    
-        
-        
-        
-        
-        
-        
-        
-        
     } // end function
-//    // segue to the PhotoAlbumViewController
-//    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-//        
-//        // create the ViewController
-//        let photoVC = storyboard!.instantiateViewControllerWithIdentifier("PhotoViewWithDelegates") as! PhotoAlbumMapViewController
-//        
-//        let clickedPinLat = view.annotation?.coordinate.latitude
-//        let clickedPinLong = view.annotation?.coordinate.longitude
-//        
-//        for obj in pins{
-//            let certainPin = obj as! LocationPin
-//            let latitudeDouble = certainPin.latitude as! Double
-//            let longitudeDouble = certainPin.longitude as! Double
-//            
-//            if (clickedPinLat == latitudeDouble && clickedPinLong == longitudeDouble) {
-//                photoVC.nsPin = obj
-//                FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitudeDouble, longitude: longitudeDouble, completionHandler: { (success, photoArray, error) in
-//                    
-//                    if success == true {
-//                        // set the location
-//                        photoVC.pin = view.annotation
-//                        photoVC.photoURLs = photoArray
-//                        
-//                       
-//                        
-//                        // once you have this, run the handler completionHandler!
-//                        dispatch_async(dispatch_get_main_queue(), {()-> Void in
-//                            
-//                            //2. Present the view controller
-//                            self.navigationController?.pushViewController(photoVC, animated: true)
-//                            mapView.deselectAnnotation(view.annotation, animated: false)
-//                            
-//                        }) // end image main queue completion handler
-//                        
-//                        
-//                    }else {
-//                        print("this didn't work")
-//                    }
-//                })
-//                break
-//            } // end lat and lon check
-//        } // end for
-//    } // end function
 }
 
 extension TravelLocationsViewController {

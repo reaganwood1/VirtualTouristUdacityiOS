@@ -171,38 +171,57 @@ class PhotoCollectionViewController: UIViewController {
     
     // get more photos for pin and store them in coreData
     func getPhotos(pin: LocationPin, completionHandler: (success: Bool, count: Int, errorString: String?) -> Void) {
+//        if (Reachability.isConnectedToNetwork()) {
         
-        guard let latitude = pin.latitude as? Double, longitude = pin.longitude as? Double else {
-            completionHandler(success: false, count: 0, errorString: "Could not get photos")
-            return
-        } // end guard
-        
-        FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitude, longitude: longitude) { (success, photoURLs, error) in
-            
-            if success == false {
-                print("error")
-                completionHandler(success: false, count: 0, errorString: "There was an error retrieving results")
+            guard let latitude = pin.latitude as? Double, longitude = pin.longitude as? Double else {
+                completionHandler(success: false, count: 0, errorString: "Could not get photos")
                 return
-            }
+            } // end guard
             
-            if photoURLs.count > 0 { // photos are returned, so add them to context
-                self.photoURLs = photoURLs
+            FlickrClient.sharedInstance().retrievePhotosFromFlickr(latitude, longitude: longitude) { (success, photoURLs, error) in
                 
-                for url in self.photoURLs {// add each url to context
+                if success == false {
+                    print("error")
+                    completionHandler(success: false, count: 0, errorString: "There was an error retrieving results")
+                    return
+                }
+                
+                if photoURLs.count > 0 { // photos are returned, so add them to context
+                    self.photoURLs = photoURLs
                     
-                    FlickrClient.sharedInstance().getPhotoImage(url, completionHandler: { (image, success) in
+                    for url in self.photoURLs {// add each url to context
                         
-                        let photoData = LocationImage(imageString: url, context: self.fetchedResultsController!.managedObjectContext)
-                        photoData.locationPin = self.locationOfPin
-                    }) // end closure
-                } // end for
-                
-                self.completeSearch()
+                        FlickrClient.sharedInstance().getPhotoImage(url, completionHandler: { (image, success) in
+                            
+                            let photoData = LocationImage(imageString: url, context: self.fetchedResultsController!.managedObjectContext)
+                            photoData.locationPin = self.locationOfPin
+                        }) // end closure
+                    } // end for
+                    
+                    self.completeSearch()
+                    
+                    completionHandler(success: true, count: photoURLs.count, errorString: nil)
+                } // end completion handler for retrivePhotosFromFlickr
+            }
 
-                completionHandler(success: true, count: photoURLs.count, errorString: nil)
-            } // end completion handler for retrivePhotosFromFlickr
-        }
+//        } else { // no network display error
+//            self.displayEmptyAlert("", message: "No Network Connection Detected", actionTitle: "Dismiss")
+//        }
     } // end function
+    
+    func displayEmptyAlert(headTitle: String?, message: String?, actionTitle: String?){ // used to create alert messages that are displayed to the user
+        
+        // run the alert in the main queue because it's a member of UIKit
+        dispatch_async(dispatch_get_main_queue(), {()-> Void in
+            
+            let alert = UIAlertController(title: headTitle, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: actionTitle, style: .Default, handler: { action in
+                
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+        }) // end image main queue completion handler
+    }
 } // end class
 
 extension PhotoCollectionViewController {

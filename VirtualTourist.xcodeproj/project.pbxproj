@@ -30,6 +30,7 @@
 		7FCF94431D5AC55F0002C704 /* LocationImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF943F1D5AC55F0002C704 /* LocationImage.swift */; };
 		7FCF94441D5AC55F0002C704 /* LocationPin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF94401D5AC55F0002C704 /* LocationPin+CoreDataProperties.swift */; };
 		7FCF94451D5AC55F0002C704 /* LocationPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF94411D5AC55F0002C704 /* LocationPin.swift */; };
+		7FCF94471D621D240002C704 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCF94461D621D240002C704 /* Reachability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		7FCF943F1D5AC55F0002C704 /* LocationImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationImage.swift; sourceTree = "<group>"; };
 		7FCF94401D5AC55F0002C704 /* LocationPin+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LocationPin+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7FCF94411D5AC55F0002C704 /* LocationPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPin.swift; sourceTree = "<group>"; };
+		7FCF94461D621D240002C704 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 		7FBEFE651CFA76C7002BA9BB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7FCF94461D621D240002C704 /* Reachability.swift */,
 				7F5210671CFE8B9D00BA95D5 /* Client */,
 				7F5210521CFBA6DA00BA95D5 /* Model.xcdatamodeld */,
 				7FCF943E1D5AC55F0002C704 /* LocationImage+CoreDataProperties.swift */,
@@ -359,6 +362,7 @@
 				7F52106D1CFE8C1E00BA95D5 /* FlickrClient.swift in Sources */,
 				7FCF94421D5AC55F0002C704 /* LocationImage+CoreDataProperties.swift in Sources */,
 				7F52106F1CFFAEF000BA95D5 /* PhotoAlbumMapViewController.swift in Sources */,
+				7FCF94471D621D240002C704 /* Reachability.swift in Sources */,
 				7FCF94451D5AC55F0002C704 /* LocationPin.swift in Sources */,
 				7F5210541CFBA6DA00BA95D5 /* Model.xcdatamodeld in Sources */,
 				7F5210691CFE8BFB00BA95D5 /* FlickrConvenience.swift in Sources */,
