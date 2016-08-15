@@ -47,9 +47,9 @@ class PhotoAlbumMapViewController: UIViewController, UICollectionViewDelegate, M
                 
                 // once you have this, run the handler completionHandler!
                 dispatch_async(dispatch_get_main_queue(), {()-> Void in
-                    cell.flickrImage.image = realImage
-                    cell.flickrActivityIndicator.stopAnimating() // stop animating when picture is retrieved
-                    cell.flickrActivityIndicator.hidden = true
+//                    cell.flickrImage.image = realImage
+//                    cell.flickrActivityIndicator.stopAnimating() // stop animating when picture is retrieved
+//                    cell.flickrActivityIndicator.hidden = true
                 }) // end image main queue completion handler
             })
         } // end closure

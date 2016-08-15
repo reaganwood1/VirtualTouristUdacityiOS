@@ -71,9 +71,9 @@ class PhotoCollectionViewController: UIViewController {
         flickrPhotoCollectionView.allowsMultipleSelection = true
         self.flickrPhotoCollectionView.hidden = false
         
-        if (fetchedResultsController!.fetchedObjects?.count == 0) {
+        if (fetchedResultsController!.fetchedObjects?.count == 0) { // if count is 0, retrieve more photos
             
-            if let mapPin = locationOfPin {
+            if let mapPin = locationOfPin { // set the pin for retrieval location
                 newCollectionButton.enabled = false
                 getPhotos(mapPin, completionHandler: { (success, count, errorString) in
                     performUIUpdatesOnMain({ 
@@ -83,6 +83,7 @@ class PhotoCollectionViewController: UIViewController {
                         } else {
                             do {
                                 try self.fetchedResultsController!.managedObjectContext.save()
+                                self.flickrPhotoCollectionView.reloadData()
                             }catch {
                                 print("nothing was saved")
                             }
@@ -95,7 +96,9 @@ class PhotoCollectionViewController: UIViewController {
                         self.flickrPhotoCollectionView.hidden = false
                     }
                     
-                    self.newCollectionButton.enabled = true
+                    performUIUpdatesOnMain({
+                        self.newCollectionButton.enabled = true
+                    })
                 }) // end get photos
             } // end if for mapPin
         } // end if for fetchedObject count
@@ -110,7 +113,9 @@ class PhotoCollectionViewController: UIViewController {
         if newCollectionButton.titleLabel!.text == "New Collection" {
             if let locPin = locationOfPin {
                 
-                newCollectionButton.enabled = false
+                performUIUpdatesOnMain({
+                    self.newCollectionButton.enabled = false
+                })
                 
                 clearImages(locPin)
                 
@@ -123,6 +128,7 @@ class PhotoCollectionViewController: UIViewController {
                         } else {
                             do {
                                 try self.fetchedResultsController!.managedObjectContext.save()
+                                self.flickrPhotoCollectionView.reloadData()
                             } catch {
                                 print("could not save")
                             } // end catch
@@ -135,12 +141,14 @@ class PhotoCollectionViewController: UIViewController {
                         self.flickrPhotoCollectionView.hidden = false
                     } // end else 
                     
-                    self.newCollectionButton.enabled = true
+                    performUIUpdatesOnMain({
+                        self.newCollectionButton.enabled = true
+                    })
                 }) // end get photos handler
             } // end if
             
         } else { // end if for title
-            if let indexes = flickrPhotoCollectionView.indexPathsForSelectedItems() {
+            if let indexes = flickrPhotoCollectionView.indexPathsForSelectedItems() { // delete all of the photos
                 for thisIndex in indexes {
                     let thisPhoto = fetchedResultsController!.objectAtIndexPath(thisIndex) as! LocationImage
                     self.fetchedResultsController!.managedObjectContext.deleteObject(thisPhoto)
@@ -154,7 +162,7 @@ class PhotoCollectionViewController: UIViewController {
     // remove the photos from the fetched results and coredata
     func clearImages(pin: LocationPin) {
   
-        if let pins = pin.locationImage!.allObjects as? [LocationImage] {
+        if let pins = pin.locationImage!.allObjects as? [LocationImage] { // delete the photos for the pin
             for photo in pins {
                 self.fetchedResultsController!.managedObjectContext.deleteObject(photo)
             }
@@ -177,64 +185,20 @@ class PhotoCollectionViewController: UIViewController {
                 return
             }
             
-            if photoURLs.count > 0 {
+            if photoURLs.count > 0 { // photos are returned, so add them to context
                 self.photoURLs = photoURLs
                 
-                for url in self.photoURLs {
+                for url in self.photoURLs {// add each url to context
                     
                     FlickrClient.sharedInstance().getPhotoImage(url, completionHandler: { (image, success) in
                         
-                        let photoData = LocationImage(image: image!, context: self.fetchedResultsController!.managedObjectContext)
+                        let photoData = LocationImage(imageString: url, context: self.fetchedResultsController!.managedObjectContext)
                         photoData.locationPin = self.locationOfPin
                     }) // end closure
                 } // end for
                 
-                performUIUpdatesOnMain({ 
-                    self.completeSearch()
-                    self.flickrPhotoCollectionView.reloadData()
-                })
-                
-                
-                
-                
-                
-                
-                
-//                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//                let stackContext = appDelegate.stack.context
-//                let fetchedRequest = NSFetchRequest(entityName: "LocationImage")
-//                
-//                var images: [NSManagedObject]
-//                // Create a fetchrequest
-//                let fr = NSFetchRequest(entityName: "LocationImage")
-//                fr.sortDescriptors = []
-//                
-//                do {
-//                    let results = try stackContext.executeFetchRequest(fetchedRequest)
-//                    images = results as! [NSManagedObject]
-//                } catch {
-//                    
-//                }
-//                print(self.locationOfPin.locationImage?.allObjects)
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                self.completeSearch()
+
                 completionHandler(success: true, count: photoURLs.count, errorString: nil)
             } // end completion handler for retrivePhotosFromFlickr
         }
@@ -265,7 +229,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout, NSF
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let photoCell = collectionView.cellForItemAtIndexPath(indexPath) {
+        if let photoCell = collectionView.cellForItemAtIndexPath(indexPath) { // if row is clicked, change the shade
             photoCell.highlighted = false
             photoCell.backgroundView!.alpha = 0.5
         }
@@ -282,7 +246,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout, NSF
         if flickrPhotoCollectionView.indexPathsForSelectedItems() == nil {
             newCollectionButton.setTitle("New Collection", forState: .Normal)
         }
-        if (indexes.count == 0) {
+        if (indexes.count == 0) { // set the button back to "New Collection" if no photos have been selected
             newCollectionButton.setTitle("New Collection", forState: .Normal)
         }
     } // end function
@@ -321,26 +285,58 @@ extension PhotoCollectionViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let photoCell = collectionView.dequeueReusableCellWithReuseIdentifier("flickrPhotoCollectionViewCell", forIndexPath: indexPath) as! FlickrCollectionViewCell
-        
-        //photoCell.flickrActivityIndicator.stopAnimating()
-        
+        photoCell.backgroundView = nil // set background photo to be a gray color
+        photoCell.backgroundColor = UIColor.lightGrayColor()
+        photoCell.flickrActivityIndicator.hidden = true
         photoCell.userInteractionEnabled = true
         
-//        if let imagePhoto = fetchedResultsController?.objectAtIndexPath(indexPath) as! LocationImage {
-//        
-//        }
-        
         let imagePhoto = fetchedResultsController?.objectAtIndexPath(indexPath) as! LocationImage
-        let imageData = imagePhoto.image
-        let photo = UIImage(data: imageData!)
-        let view = UIImageView(image: photo)
-        photoCell.backgroundView = view
-        photoCell.backgroundView!.alpha = 0.1
-        if photoCell.selected == true {
+        
+        // load photos
+        if (imagePhoto.image != nil) {
+            let imageData = imagePhoto.image!
+            let photo = UIImage(data: imageData)
+            let view = UIImageView(image: photo)
+            //photoCell.backgroundView = view
+            photoCell.backgroundView = view
             photoCell.backgroundView!.alpha = 0.1
+            if photoCell.selected == true {
+                photoCell.backgroundView!.alpha = 0.1
+            } else {
+                photoCell.backgroundView!.alpha = 1.0
+            } // end else
         } else {
-            photoCell.backgroundView!.alpha = 1.0
-        } // end else
+            
+            
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) { () -> Void in
+                photoCell.backgroundView = nil
+                photoCell.flickrActivityIndicator.hidden = false
+                photoCell.flickrActivityIndicator.startAnimating()
+                
+                FlickrClient.sharedInstance().getPhotoImage(imagePhoto.urlForImage!, completionHandler: { (image, success) in
+                    
+                    imagePhoto.image = image
+                    
+                    // once you have this, run the handler completionHandler!
+                    dispatch_async(dispatch_get_main_queue(), {()-> Void in
+                        // set image to cell on the main thread
+                        let photo = UIImage(data: image!)
+                        let view = UIImageView(image: photo)
+                        //photoCell.backgroundView = view
+                        photoCell.backgroundView = view
+                        photoCell.backgroundView!.alpha = 0.1
+                        if photoCell.selected == true {
+                            photoCell.backgroundView!.alpha = 0.1
+                        } else {
+                            photoCell.backgroundView!.alpha = 1.0
+                        } // end else
+                        photoCell.flickrActivityIndicator.stopAnimating()
+                        photoCell.flickrActivityIndicator.hidden = true
+                        self.completeSearch()
+                    }) // end image main queue completion handler
+                })
+            } // end closure
+        }
         
         return photoCell
     } // end function
