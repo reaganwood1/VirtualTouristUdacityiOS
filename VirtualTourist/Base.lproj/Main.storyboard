@@ -208,16 +208,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MIo-eZ-6Dr">
-                                <rect key="frame" x="0.0" y="553" width="600" height="47"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="New Collection"/>
-                                <connections>
-                                    <action selector="createNewCollectionButtonSelected:" destination="ncn-Ha-JlD" eventType="touchUpInside" id="3K5-tZ-p3A"/>
-                                </connections>
-                            </button>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5Gn-vF-cEm">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="205"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="205" id="Dkv-cw-4tw"/>
+                                    <constraint firstAttribute="width" constant="600" id="HiH-3l-1Ch"/>
+                                </constraints>
                             </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bud-Da-ciz">
                                 <rect key="frame" x="0.0" y="213" width="600" height="332"/>
@@ -254,20 +250,32 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MIo-eZ-6Dr">
+                                <rect key="frame" x="0.0" y="553" width="600" height="47"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="600" id="KFx-C6-ns0"/>
+                                    <constraint firstAttribute="height" constant="47" id="vEh-mg-m3W"/>
+                                </constraints>
+                                <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="createNewCollectionButtonSelected:" destination="ncn-Ha-JlD" eventType="touchUpInside" id="3K5-tZ-p3A"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="MIo-eZ-6Dr" firstAttribute="top" secondItem="bud-Da-ciz" secondAttribute="bottom" constant="8" id="1tb-YO-6cT"/>
                             <constraint firstItem="5Gn-vF-cEm" firstAttribute="leading" secondItem="c0h-Aw-zxc" secondAttribute="leadingMargin" constant="-20" id="8U0-sj-Kk3"/>
                             <constraint firstItem="5Gn-vF-cEm" firstAttribute="top" secondItem="6Nm-BA-KaD" secondAttribute="bottom" constant="-20" id="9EH-xs-MKr"/>
-                            <constraint firstItem="qR5-t1-jJR" firstAttribute="top" secondItem="5Gn-vF-cEm" secondAttribute="bottom" constant="395" id="DHe-Yu-Vv7"/>
+                            <constraint firstItem="MIo-eZ-6Dr" firstAttribute="top" secondItem="bud-Da-ciz" secondAttribute="bottom" constant="8" id="AzR-bf-QOr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MIo-eZ-6Dr" secondAttribute="trailing" constant="-20" id="Fp9-ZV-A5I"/>
                             <constraint firstAttribute="trailingMargin" secondItem="5Gn-vF-cEm" secondAttribute="trailing" constant="-20" id="I8w-FC-gFK"/>
-                            <constraint firstItem="qR5-t1-jJR" firstAttribute="top" secondItem="MIo-eZ-6Dr" secondAttribute="bottom" id="LEh-Wb-cwF"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="MIo-eZ-6Dr" secondAttribute="trailing" constant="-20" id="NeI-eO-h6S"/>
+                            <constraint firstItem="MIo-eZ-6Dr" firstAttribute="top" secondItem="6Nm-BA-KaD" secondAttribute="bottom" constant="533" id="TRy-2z-FdJ"/>
                             <constraint firstItem="bud-Da-ciz" firstAttribute="top" secondItem="5Gn-vF-cEm" secondAttribute="bottom" constant="8" id="Zvy-rq-Zwq"/>
-                            <constraint firstItem="MIo-eZ-6Dr" firstAttribute="leading" secondItem="c0h-Aw-zxc" secondAttribute="leadingMargin" constant="-20" id="apq-OM-uDU"/>
+                            <constraint firstItem="MIo-eZ-6Dr" firstAttribute="leading" secondItem="c0h-Aw-zxc" secondAttribute="leadingMargin" constant="-20" id="dkU-WB-LoZ"/>
                             <constraint firstItem="bud-Da-ciz" firstAttribute="leading" secondItem="c0h-Aw-zxc" secondAttribute="leadingMargin" constant="-20" id="frG-Re-Cj2"/>
-                            <constraint firstItem="MIo-eZ-6Dr" firstAttribute="top" secondItem="6Nm-BA-KaD" secondAttribute="bottom" constant="533" id="gyv-os-gUx"/>
+                            <constraint firstItem="qR5-t1-jJR" firstAttribute="top" secondItem="MIo-eZ-6Dr" secondAttribute="bottom" id="fri-MJ-pE5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="bud-Da-ciz" secondAttribute="trailing" constant="-20" id="jFF-Zh-aLb"/>
                         </constraints>
                     </view>
